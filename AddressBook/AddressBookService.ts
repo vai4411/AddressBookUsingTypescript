@@ -1,15 +1,23 @@
 import { Person } from "./Person";
+let jsonString: string;
+let personList = new Array<Person>();
 const fs = require('fs');
 
-export class AddressBookService {
-    static createPerson = (person: Person): void => {
-        const jsonString = JSON.stringify(person);
-        fs.writeFile('./AddressBook.json', jsonString, err => {
-            if (err) {
-                console.log('Error writing file', err)
-            } else {
-                console.log('Successfully wrote file')
-            }
-        })
-    }
+let writePersonData = (jsonString: string): void => {
+    fs.writeFileSync('./AddressBook.json', jsonString);
+}
+
+let storePersonData = (person: Person): void => {
+    personList.push(person);
+    jsonString = JSON.stringify(personList);
+    writePersonData(jsonString);
+}
+
+export let createContactPerson = (person: Person): void => {
+    fs.unlinkSync('./AddressBook.json');
+    storePersonData(person);
+}
+
+export let addPerson = (person: Person): void => {
+    storePersonData(person);
 }
