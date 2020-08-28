@@ -58,7 +58,7 @@ class AddressBook {
             let index = readlineSync.question("\nEnter persons index:");
             previousDataList = FileOperation_1.fileOperation.readJsonFile();
             let person = previousDataList[index - 1];
-            console.log("1: Update Address");
+            console.log("1: Update address");
             console.log("2: Update city name");
             console.log("3: Update state name");
             console.log("4: Update zip code");
@@ -98,8 +98,29 @@ class AddressBook {
         };
         // sort persons data in address book
         this.sortPersonsData = () => {
+            console.log("\n***********Sort Person Contact**************\n");
+            console.log("1: Sort data by name");
+            console.log("2: Sort data by city");
+            console.log("3: Sort data by state");
+            console.log("4: Sort data by zip");
+            let choice = readlineSync.question("\nEnter choice:");
             previousDataList = FileOperation_1.fileOperation.readJsonFile();
-            previousDataList.sort((a, b) => a.firstName.localeCompare(b.firstName));
+            switch (choice) {
+                case "1":
+                    previousDataList.sort((a, b) => a.firstName.localeCompare(b.firstName));
+                    break;
+                case "2":
+                    previousDataList.sort((a, b) => a.city.localeCompare(b.city));
+                    break;
+                case "3":
+                    previousDataList.sort((a, b) => a.state.localeCompare(b.state));
+                    break;
+                case "4":
+                    previousDataList.sort((a, b) => a.zip.localeCompare(b.zip));
+                    break;
+                default:
+                    console.log("Invalid choice....");
+            }
             FileOperation_1.fileOperation.writeJsonFile(previousDataList);
         };
     }
