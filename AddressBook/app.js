@@ -10,7 +10,8 @@ let main = () => {
         console.log("2: Display Contacts");
         console.log("3: Update Person Contact");
         console.log("4: Delete Person Contact");
-        console.log("5: exit");
+        console.log("5: Sort Person Contacts");
+        console.log("6: exit");
         let choice = readlineSync.question("Enter your choice: ");
         switch (choice) {
             case "1":
@@ -26,6 +27,9 @@ let main = () => {
                 AddressBookService_1.addressBook.deletePerson();
                 break;
             case "5":
+                AddressBookService_1.addressBook.sortPersonsData();
+                break;
+            case "6":
                 process_1.exit();
             default:
                 console.log("\nInvalid choice....\n");

@@ -4,7 +4,6 @@ exports.addressBook = void 0;
 const Person_1 = require("./Person");
 const FileOperation_1 = require("./FileOperation");
 var readlineSync = require('readline-sync');
-let personList = new Array();
 let regexString = new RegExp('^[A-Za-z]{3,}$');
 let regexZip = new RegExp('^[0-9]{3}[ ]?[0-9]{3}');
 let regexNumber = new RegExp('^[0-9]{10}');
@@ -35,18 +34,19 @@ class AddressBook {
         this.display = () => {
             FileOperation_1.fileOperation.displayRecords();
         };
-        // add person to address book
+        // add person to address book{
         this.addPerson = (person) => {
-            let result;
-            for (let entry = 0; entry < personList.length; entry++) {
-                result = (personList[entry].firstName == person.firstName
-                    && personList[entry].lastName == person.lastName) ? true : false;
+            previousDataList = FileOperation_1.fileOperation.readJsonFile();
+            let result = true;
+            for (let entry = 0; entry < previousDataList.length; entry++) {
+                if (previousDataList[entry].firstName == person.firstName
+                    && previousDataList[entry].lastName == person.lastName) {
+                    result = false;
+                }
             }
             if (result) {
-                personList.push(person);
-                previousDataList = FileOperation_1.fileOperation.readJsonFile();
-                let finalList = personList.concat(previousDataList);
-                FileOperation_1.fileOperation.writeJsonFile(finalList);
+                previousDataList.push(person);
+                FileOperation_1.fileOperation.writeJsonFile(previousDataList);
             }
             else {
                 console.log("userName is already present....");
@@ -57,7 +57,7 @@ class AddressBook {
             console.log("\n*********Update Person Contact************\n");
             let index = readlineSync.question("\nEnter persons index:");
             previousDataList = FileOperation_1.fileOperation.readJsonFile();
-            let person = personList[index - 1];
+            let person = previousDataList[index - 1];
             console.log("1: Update Address");
             console.log("2: Update city name");
             console.log("3: Update state name");
@@ -85,16 +85,22 @@ class AddressBook {
                 default:
                     console.log("Invalid choice....");
             }
-            personList[index - 1] = updatedPerson;
-            FileOperation_1.fileOperation.writeJsonFile(personList);
+            previousDataList[index - 1] = updatedPerson;
+            FileOperation_1.fileOperation.writeJsonFile(previousDataList);
         };
         // delete person in address book
         this.deletePerson = () => {
             console.log("\n*********Delete Person Contact************\n");
             let index = readlineSync.question("\nEnter persons index:");
             previousDataList = FileOperation_1.fileOperation.readJsonFile();
-            personList.splice(index - 1, 1);
-            FileOperation_1.fileOperation.writeJsonFile(personList);
+            previousDataList.splice(index - 1, 1);
+            FileOperation_1.fileOperation.writeJsonFile(previousDataList);
+        };
+        // sort persons data in address book
+        this.sortPersonsData = () => {
+            previousDataList = FileOperation_1.fileOperation.readJsonFile();
+            previousDataList.sort((a, b) => a.firstName.localeCompare(b.firstName));
+            FileOperation_1.fileOperation.writeJsonFile(previousDataList);
         };
     }
 }
