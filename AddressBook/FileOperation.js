@@ -6,6 +6,7 @@ const fs = require("fs");
 let personDetails = new Array();
 class FileOperaion {
     constructor() {
+        // read json file
         this.readJsonFile = () => {
             try {
                 let data = fs.readFileSync(fileName);
@@ -16,6 +17,7 @@ class FileOperaion {
                 console.log(err);
             }
         };
+        // write data in json file
         this.writeJsonFile = (userList) => {
             try {
                 let jsonString = JSON.stringify(userList);
@@ -25,6 +27,7 @@ class FileOperaion {
                 console.log(err);
             }
         };
+        // display all records
         this.displayRecords = () => {
             console.log("\n*********Display Person Contact************\n");
             this.readJsonFile();

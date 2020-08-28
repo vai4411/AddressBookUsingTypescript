@@ -39,10 +39,19 @@ class AddressBook {
 
     // add person to address book
     addPerson = (person: Person): void => {
-        personList.push(person);
-        previousDataList = fileOperation.readJsonFile();
-        let finalList = personList.concat(previousDataList);
-        fileOperation.writeJsonFile(finalList);
+        let result: boolean;
+        for (let entry = 0; entry < personList.length; entry++) {
+            result = (personList[entry].firstName == person.firstName
+                && personList[entry].lastName == person.lastName) ? true : false;
+        }
+        if (result) {
+            personList.push(person);
+            previousDataList = fileOperation.readJsonFile();
+            let finalList = personList.concat(previousDataList);
+            fileOperation.writeJsonFile(finalList);
+        } else {
+            console.log("userName is already present....");
+        }
     }
 
     // update data of existing person
