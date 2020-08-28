@@ -7,9 +7,11 @@ let personList = new Array<Person>();
 let regexString: RegExp = new RegExp('^[A-Za-z]{3,}$');
 let regexZip: RegExp = new RegExp('^[0-9]{3}[ ]?[0-9]{3}');
 let regexNumber: RegExp = new RegExp('^[0-9]{10}');
+let previousDataList = new Array<Person>();
 
 class AddressBook {
 
+    // provide input feilds
     personInput = (isWrongDetails: boolean): Person => {
         while (isWrongDetails) {
             let firstName: string = readlineSync.question('Enter first name: ');
@@ -30,21 +32,24 @@ class AddressBook {
         }
     }
 
+    // display all records
     display = (): void => {
         fileOperation.displayRecords();
     }
 
+    // add person to address book
     addPerson = (person: Person): void => {
         personList.push(person);
-        let oldPersonList: Array<Person> = fileOperation.readJsonFile();
-        let finalList = personList.concat(oldPersonList);
+        previousDataList = fileOperation.readJsonFile();
+        let finalList = personList.concat(previousDataList);
         fileOperation.writeJsonFile(finalList);
     }
 
+    // update data of existing person
     updatePerson = (): void => {
         console.log("\n*********Update Person Contact************\n");
         let index: number = readlineSync.question("\nEnter persons index:");
-        let personList: Array<Person> = fileOperation.readJsonFile();
+        previousDataList = fileOperation.readJsonFile();
         let person: Person = personList[index - 1];
         console.log("1: Update Address");
         console.log("2: Update city name");
@@ -79,10 +84,11 @@ class AddressBook {
         fileOperation.writeJsonFile(personList);
     }
 
+    // delete person in address book
     deletePerson = (): void => {
         console.log("\n*********Delete Person Contact************\n");
         let index: number = readlineSync.question("\nEnter persons index:");
-        let personList: Array<Person> = fileOperation.readJsonFile();
+        previousDataList = fileOperation.readJsonFile();
         personList.splice(index - 1, 1);
         fileOperation.writeJsonFile(personList);
     }

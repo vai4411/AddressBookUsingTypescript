@@ -5,6 +5,7 @@ let personDetails = new Array<Person>();
 
 class FileOperaion {
 
+    // read json file
     readJsonFile = (): Array<Person> => {
         try {
             let data = fs.readFileSync(fileName);
@@ -15,6 +16,7 @@ class FileOperaion {
         }
     }
 
+    // write data in json file
     writeJsonFile = (userList: Array<Person>): void => {
         try {
             let jsonString = JSON.stringify(userList);
@@ -24,6 +26,7 @@ class FileOperaion {
         }
     }
 
+    // display all records
     displayRecords = (): void => {
         console.log("\n*********Display Person Contact************\n");
         this.readJsonFile();
