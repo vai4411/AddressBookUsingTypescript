@@ -9,7 +9,8 @@ let main = () => {
         console.log("1: Add Person Contact");
         console.log("2: Display Contacts");
         console.log("3: Update Person Contact")
-        console.log("4: exit");
+        console.log("4: Delete Person Contact");
+        console.log("5: exit");
         let choice = readlineSync.question("Enter your choice: ");
         switch (choice) {
             case "1":
@@ -22,6 +23,9 @@ let main = () => {
                 addressBook.updatePerson();
                 break;
             case "4":
+                addressBook.deletePerson();
+                break;
+            case "5":
                 exit();
             default:
                 console.log("\nInvalid choice....\n");

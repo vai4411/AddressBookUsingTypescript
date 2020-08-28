@@ -29,6 +29,9 @@ class AddressBook {
                 }
             }
         };
+        this.display = () => {
+            FileOperation_1.fileOperation.displayRecords();
+        };
         this.addPerson = (person) => {
             personList.push(person);
             let oldPersonList = FileOperation_1.fileOperation.readJsonFile();
@@ -39,7 +42,7 @@ class AddressBook {
             console.log("\n*********Update Person Contact************\n");
             let index = readlineSync.question("\nEnter persons index:");
             let personList = FileOperation_1.fileOperation.readJsonFile();
-            let person = personList[index];
+            let person = personList[index - 1];
             console.log("1: Update Address");
             console.log("2: Update city name");
             console.log("3: Update state name");
@@ -70,8 +73,12 @@ class AddressBook {
             personList[index] = updatedPerson;
             FileOperation_1.fileOperation.writeJsonFile(personList);
         };
-        this.display = () => {
-            FileOperation_1.fileOperation.displayRecords();
+        this.deletePerson = () => {
+            console.log("\n*********Delete Person Contact************\n");
+            let index = readlineSync.question("\nEnter persons index:");
+            let personList = FileOperation_1.fileOperation.readJsonFile();
+            personList.splice(index - 1, 1);
+            FileOperation_1.fileOperation.writeJsonFile(personList);
         };
     }
 }

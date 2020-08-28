@@ -20,7 +20,6 @@ class FileOperaion {
             try {
                 let jsonString = JSON.stringify(userList);
                 fs.writeFileSync(fileName, jsonString);
-                console.log("File write successfully...");
             }
             catch (err) {
                 console.log(err);
@@ -30,7 +29,7 @@ class FileOperaion {
             console.log("\n*********Display Person Contact************\n");
             this.readJsonFile();
             personDetails.map((i, index) => {
-                console.log(index + " " + JSON.stringify(i));
+                console.log((index + 1) + " " + JSON.stringify(i));
             });
         };
     }

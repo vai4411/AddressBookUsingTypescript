@@ -30,6 +30,10 @@ class AddressBook {
         }
     }
 
+    display = (): void => {
+        fileOperation.displayRecords();
+    }
+
     addPerson = (person: Person): void => {
         personList.push(person);
         let oldPersonList: Array<Person> = fileOperation.readJsonFile();
@@ -39,9 +43,9 @@ class AddressBook {
 
     updatePerson = (): void => {
         console.log("\n*********Update Person Contact************\n");
-        let index: string = readlineSync.question("\nEnter persons index:");
+        let index: number = readlineSync.question("\nEnter persons index:");
         let personList: Array<Person> = fileOperation.readJsonFile();
-        let person: Person = personList[index];
+        let person: Person = personList[index - 1];
         console.log("1: Update Address");
         console.log("2: Update city name");
         console.log("3: Update state name");
@@ -71,12 +75,16 @@ class AddressBook {
             default:
                 console.log("Invalid choice....");
         }
-        personList[index] = updatedPerson;
+        personList[index - 1] = updatedPerson;
         fileOperation.writeJsonFile(personList);
     }
 
-    display = (): void => {
-        fileOperation.displayRecords();
+    deletePerson = (): void => {
+        console.log("\n*********Delete Person Contact************\n");
+        let index: number = readlineSync.question("\nEnter persons index:");
+        let personList: Array<Person> = fileOperation.readJsonFile();
+        personList.splice(index - 1, 1);
+        fileOperation.writeJsonFile(personList);
     }
 }
 
