@@ -4,11 +4,11 @@ export class Person {
     address: string;
     city: string;
     state: string;
-    zip: string;
-    number: string;
+    zip: number;
+    number: number;
 
     constructor(firstName: string, lastName: string, address: string, city: string, state: string,
-        zip: string, number: string) {
+        zip: number, number: number) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.address = address;
@@ -38,11 +38,11 @@ export class Person {
         this.state = state;
     }
 
-    setZip(zip: string) {
+    setZip(zip: number) {
         this.zip = zip;
     }
 
-    setNumber(number: string) {
+    setNumber(number: number) {
         this.number = number;
     }
 }

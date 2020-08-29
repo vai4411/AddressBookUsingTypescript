@@ -38,6 +38,9 @@
     <Content Include="tsconfig.json" />
   </ItemGroup>
   <ItemGroup>
+    <TypeScriptCompile Include="AddressBookException.ts">
+      <SubType>Code</SubType>
+    </TypeScriptCompile>
     <TypeScriptCompile Include="AddressBookService.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>

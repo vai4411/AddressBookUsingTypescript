@@ -1,12 +1,13 @@
 import { Person } from "./Person";
 import { fileOperation } from "./FileOperation";
+import { AddressBookException } from "./AddressBookException";
 
 var readlineSync = require('readline-sync');
 
 let regexString: RegExp = new RegExp('^[A-Za-z]{3,}$');
 let regexZip: RegExp = new RegExp('^[0-9]{3}[ ]?[0-9]{3}');
 let regexNumber: RegExp = new RegExp('^[0-9]{10}');
-let previousDataList = new Array<Person>();
+let previousDataList: Array<Person> = new Array<Person>();
 
 class AddressBook {
 
@@ -18,15 +19,15 @@ class AddressBook {
             let address: string = readlineSync.question('Enter address: ');
             let city: string = readlineSync.question('Enter city: ');
             let state: string = readlineSync.question('Enter state: ');
-            let zip: string = readlineSync.question('Enter zip: ');
-            let phoneNumber: string = readlineSync.question('Enter phone number: ');
+            let zip: number = readlineSync.question('Enter zip: ');
+            let phoneNumber: number = readlineSync.question('Enter phone number: ');
             if (regexString.test(firstName) && regexString.test(lastName) && regexString.test(city)
-                && regexString.test(state) && regexZip.test(zip) && regexNumber.test(phoneNumber)) {
+                && regexString.test(state) && regexZip.test(String(zip)) && regexNumber.test(String(phoneNumber))) {
                 isWrongDetails = false;
                 return new Person(firstName, lastName, address, city, state, zip, phoneNumber);
             }
             else {
-                console.log("\nPlease enter correct details....\n");
+                throw new AddressBookException("Please enter correct data...");
             }
         }
     }
@@ -37,20 +38,23 @@ class AddressBook {
     }
 
     // add person to address book{
-    addPerson = (person: Person): void => {
+    addPerson = (): void => {
+        let person: Person = addressBook.personInput(true);
         previousDataList = fileOperation.readJsonFile();
         let result: boolean = true;
         for (let entry = 0; entry < previousDataList.length; entry++) {
             if (previousDataList[entry].firstName == person.firstName
-                && previousDataList[entry].lastName == person.lastName) {
+                && previousDataList[entry].lastName == person.lastName
+                && previousDataList[entry].number == person.number) {
                 result = false;
             }
         }
         if (result) {
             previousDataList.push(person);
             fileOperation.writeJsonFile(previousDataList);
+            console.log("Person added successfully...");
         } else {
-            console.log("userName is already present....");
+            throw new AddressBookException("User is already present....");
         }
     }
 
@@ -69,27 +73,28 @@ class AddressBook {
         let data: string = readlineSync.question("\nEnter data:");
         let updatedPerson: Person = new Person(person.firstName, person.lastName, person.address,
             person.city, person.state, person.zip, person.number);
-        switch (choice) {
-            case "1":
+        switch (Number(choice)) {
+            case 1:
                 regexString.test(data) ? updatedPerson.setAddress(data) : console.log("Invlid address...");
                 break;
-            case "2":
+            case 2:
                 regexString.test(data) ? updatedPerson.setCity(data) : console.log("Invlid city name...");
                 break;
-            case "3":
+            case 3:
                 regexString.test(data) ? updatedPerson.setState(data) : console.log("Invlid state name...");
                 break;
-            case "4":
-                regexZip.test(data) ? updatedPerson.setZip(data) : console.log("Invalid zip code...");
+            case 4:
+                regexZip.test(data) ? updatedPerson.setZip(Number(data)) : console.log("Invalid zip code...");
                 break;
-            case "5":
-                regexNumber.test(data) ? updatedPerson.setNumber(data) : console.log("Invalid phone number...");
+            case 5:
+                regexNumber.test(data) ? updatedPerson.setNumber(Number(data)) : console.log("Invalid phone number...");
                 break;
             default:
                 console.log("Invalid choice....");
         }
         previousDataList[index - 1] = updatedPerson;
         fileOperation.writeJsonFile(previousDataList);
+        console.log("Person updated successfully...");
     }
 
     // delete person in address book
@@ -99,6 +104,7 @@ class AddressBook {
         previousDataList = fileOperation.readJsonFile();
         previousDataList.splice(index - 1, 1);
         fileOperation.writeJsonFile(previousDataList);
+        console.log("Person deleted successfully...");
     }
 
     // sort persons data in address book
@@ -110,18 +116,18 @@ class AddressBook {
         console.log("4: Sort data by zip");
         let choice: string = readlineSync.question("\nEnter choice:");
         previousDataList = fileOperation.readJsonFile();
-        switch (choice) {
-            case "1":
-                previousDataList.sort((a, b) => a.firstName.localeCompare(b.firstName));
+        switch (Number(choice)) {
+            case 1:
+                previousDataList.sort((a, b) => a.firstName.localeCompare(b.firstName) || a.lastName.localeCompare(b.lastName));
                 break;
-            case "2":
+            case 2:
                 previousDataList.sort((a, b) => a.city.localeCompare(b.city));
                 break;
-            case "3":
+            case 3:
                 previousDataList.sort((a, b) => a.state.localeCompare(b.state));
                 break;
-            case "4":
-                previousDataList.sort((a, b) => a.zip.localeCompare(b.zip));
+            case 4:
+                previousDataList.sort((a, b) => String(a.zip).localeCompare(String(b.zip)));
                 break;
             default:
                 console.log("Invalid choice....");
